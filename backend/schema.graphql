@@ -3,6 +3,56 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""Color for the category"""
+enum CategoryColor {
+  blue
+  green
+  orange
+  pink
+  purple
+  red
+  yellow
+}
+
+"""Icon for the category"""
+enum CategoryIcon {
+  BAGGAGE_CLAIM
+  BOOK_OPEN
+  BRIEFCASE_BUSINESS
+  CAR_FRONT
+  DUMBBELL
+  GIFT
+  HEART_PULSE
+  HOUSE
+  MAILBOX
+  PAW_PRINT
+  PIGGY_BANK
+  RECEIPT_TEXT
+  SHOPPING_CART
+  TICKET
+  TOOL_CASE
+  UTENSILS
+}
+
+type CategoryModel {
+  color: CategoryColor!
+  createdAt: DateTimeISO!
+  description: String
+  icon: CategoryIcon!
+  id: ID!
+  title: String!
+  updatedAt: DateTimeISO!
+  user: UserModel
+  userId: String!
+}
+
+input CreateCategoryInput {
+  color: CategoryColor!
+  description: String
+  icon: CategoryIcon!
+  title: String!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
 """
@@ -20,14 +70,19 @@ type LoginOutput {
 }
 
 type Mutation {
+  createCategory(data: CreateCategoryInput!): CategoryModel!
+  deleteCategory(id: String!): Boolean!
   deleteUser(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
+  updateCategory(data: UpdateCategoryInput!, id: String!): CategoryModel!
   updateUser(data: UpdateUserInput!, id: String!): UserModel!
 }
 
 type Query {
+  getCategory(id: String!): CategoryModel!
   getUser(id: String!): UserModel!
+  listCategories: [CategoryModel!]!
 }
 
 input RegisterInput {
@@ -40,6 +95,13 @@ type RegisterOutput {
   refreshToken: String!
   token: String!
   user: UserModel!
+}
+
+input UpdateCategoryInput {
+  color: CategoryColor
+  description: String
+  icon: CategoryIcon
+  title: String
 }
 
 input UpdateUserInput {

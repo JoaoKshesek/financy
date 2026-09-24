@@ -11,6 +11,7 @@ import { buildSchema } from 'type-graphql'
 import { buildContext, GraphqlContext } from './graphql/context'
 import { AuthResolver } from './resolvers/auth.resolver'
 import { UserResolver } from './resolvers/user.resolver'
+import { CategoryResolver } from './resolvers/category.resolver'
 
 const PORT = Number(process.env.PORT) || 4000
 
@@ -19,6 +20,7 @@ async function bootstrap() {
     resolvers: [
       AuthResolver,
       UserResolver,
+      CategoryResolver
     ],
     emitSchemaFile: path.resolve(process.cwd(), 'schema.graphql'),
     validate: false,
