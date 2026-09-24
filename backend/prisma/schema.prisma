@@ -12,12 +12,55 @@ datasource db {
   provider = "sqlite"
 }
 
-
 model User {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  email     String    @unique
+  email     String   @unique
   password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Category Category[]
+}
+
+enum CategoryIcon {
+  BRIEFCASE_BUSINESS
+  CAR_FRONT
+  HEART_PULSE
+  PIGGY_BANK
+  SHOPPING_CART
+  TICKET
+  TOOL_CASE
+  UTENSILS
+  PAW_PRINT
+  HOUSE
+  GIFT
+  DUMBBELL
+  BOOK_OPEN
+  BAGGAGE_CLAIM
+  MAILBOX
+  RECEIPT_TEXT
+}
+
+enum CategoryColor {
+  green
+  blue
+  purple
+  pink
+  red
+  orange
+  yellow
+}
+
+model Category {
+  id          String        @id @default(uuid())
+  title       String
+  description String?
+  icon        CategoryIcon  @default(BRIEFCASE_BUSINESS)
+  color       CategoryColor @default(green)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
