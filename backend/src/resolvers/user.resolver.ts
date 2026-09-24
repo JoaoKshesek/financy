@@ -1,0 +1,33 @@
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { UserModel } from '../models/user.model'
+import { UserService } from '../services/user.service'
+import { IsAuth } from '../middlewares/auth.middleware'
+import { UpdateUserInput } from '../dtos/input/user.input'
+import { GraphqlContext } from '../graphql/context'
+
+@Resolver(() => UserModel)
+@UseMiddleware(IsAuth)
+export class UserResolver {
+  private userService = new UserService()
+
+  @Mutation(() => UserModel)
+  async updateUser(
+    @Arg('id', () => String) id: string,
+    @Arg('data', () => UpdateUserInput) data: UpdateUserInput
+  ): Promise<UserModel> {
+    return this.userService.updateUser(id, data)
+  }
+
+  @Mutation(() => Boolean)
+  async deleteUser(
+    @Arg('id', () => String) id: string,
+    @Ctx() ctx: GraphqlContext
+  ): Promise<boolean> {
+    return this.userService.deleteUser(id)
+  }
+
+  @Query(() => UserModel)
+  async getUser(@Arg('id', () => String) id: string): Promise<UserModel> {
+    return this.userService.findUser(id)
+  }
+}
