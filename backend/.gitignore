@@ -1,7 +1,13 @@
 node_modules
+
 # Keep environment variables out of version control
 .env
 
+# Prisma Client gerado — recriado com `pnpm generate`
 /src/generated/prisma
 
-/src/generated/prisma
+# Banco SQLite local (dados reais + hashes de senha)
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
