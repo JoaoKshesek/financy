@@ -46,11 +46,33 @@ type CategoryModel {
   userId: String!
 }
 
+type CategorySummaryModel {
+  category: CategoryModel!
+  count: Int!
+  total: Float!
+}
+
 input CreateCategoryInput {
   color: CategoryColor!
   description: String
   icon: CategoryIcon!
   title: String!
+}
+
+input CreateTransactionInput {
+  amount: Float!
+  categoryId: String
+  date: DateTimeISO!
+  description: String!
+  type: TransactionType!
+}
+
+type DashboardModel {
+  balance: Float!
+  monthExpenses: Float!
+  monthIncome: Float!
+  recentTransactions: [TransactionModel!]!
+  topCategories: [CategorySummaryModel!]!
 }
 
 """
@@ -71,18 +93,24 @@ type LoginOutput {
 
 type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryModel!
+  createTransaction(data: CreateTransactionInput!): TransactionModel!
   deleteCategory(id: String!): Boolean!
+  deleteTransaction(id: String!): Boolean!
   deleteUser(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
   updateCategory(data: UpdateCategoryInput!, id: String!): CategoryModel!
+  updateTransaction(data: UpdateTransactionInput!, id: String!): TransactionModel!
   updateUser(data: UpdateUserInput!, id: String!): UserModel!
 }
 
 type Query {
+  dashboard: DashboardModel!
   getCategory(id: String!): CategoryModel!
+  getTransaction(id: String!): TransactionModel!
   getUser(id: String!): UserModel!
   listCategories: [CategoryModel!]!
+  listTransactions: [TransactionModel!]!
 }
 
 input RegisterInput {
@@ -97,11 +125,39 @@ type RegisterOutput {
   user: UserModel!
 }
 
+type TransactionModel {
+  amount: Float!
+  category: CategoryModel
+  categoryId: String
+  createdAt: DateTimeISO!
+  date: DateTimeISO!
+  description: String!
+  id: ID!
+  type: TransactionType!
+  updatedAt: DateTimeISO!
+  user: UserModel
+  userId: String!
+}
+
+"""Type of the transaction"""
+enum TransactionType {
+  EXPENSE
+  INCOME
+}
+
 input UpdateCategoryInput {
   color: CategoryColor
   description: String
   icon: CategoryIcon
   title: String
+}
+
+input UpdateTransactionInput {
+  amount: Float
+  categoryId: String
+  date: DateTimeISO
+  description: String
+  type: TransactionType
 }
 
 input UpdateUserInput {
