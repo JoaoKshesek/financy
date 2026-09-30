@@ -8,7 +8,9 @@ export class CategoryService {
     })
   }
 
-  async getCategory(categoryId: string, userId: string) {
+  async getCategory(categoryId: string | null, userId: string) {
+     if (!categoryId) return null
+
     const category = await prismaClient.category.findFirst({
       where: { id: categoryId, userId },
     })
